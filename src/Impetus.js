@@ -204,6 +204,10 @@ export default class Impetus {
          * @param  {Object} ev Normalized event
          */
         function onMove(ev) {
+            if ( paused) {
+                return
+            }
+
             ev.preventDefault();
             var event = normalizeEvent(ev);
 
