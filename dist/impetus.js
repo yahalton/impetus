@@ -223,6 +223,10 @@
          * @param  {Object} ev Normalized event
          */
         function onMove(ev) {
+            if (paused) {
+                return;
+            }
+
             ev.preventDefault();
             var event = normalizeEvent(ev);
 
@@ -382,6 +386,8 @@
             if (Math.abs(decVelX) > 1 || Math.abs(decVelY) > 1 || !diff.inBounds) {
                 decelerating = true;
                 requestAnimFrame(stepDecelAnim);
+            } else {
+                sourceEl.dispatchEvent(new Event("momentumend"));
             }
         }
 
@@ -446,6 +452,7 @@
                 requestAnimFrame(stepDecelAnim);
             } else {
                 decelerating = false;
+                sourceEl.dispatchEvent(new Event("momentumend"));
             }
         }
     }
