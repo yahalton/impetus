@@ -371,6 +371,8 @@ export default class Impetus {
             if ((Math.abs(decVelX) > 1 || Math.abs(decVelY) > 1) || !diff.inBounds){
                 decelerating = true;
                 requestAnimFrame(stepDecelAnim);
+            } else {
+                sourceEl.dispatchEvent(new Event("momentumend"));
             }
         }
 
@@ -436,6 +438,7 @@ export default class Impetus {
                 requestAnimFrame(stepDecelAnim);
             } else {
                 decelerating = false;
+                sourceEl.dispatchEvent(new Event("momentumend"));
             }
         }
     }
