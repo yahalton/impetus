@@ -13,6 +13,7 @@ export default class Impetus {
     constructor({
         source: sourceEl = document,
         update: updateCallback,
+        transforminput: transformInput,
         multiplier = 1,
         friction = 0.92,
         initialValues,
@@ -160,12 +161,28 @@ export default class Impetus {
         function normalizeEvent(ev) {
             if (ev.type === 'touchmove' || ev.type === 'touchstart' || ev.type === 'touchend') {
                 var touch = ev.targetTouches[0] || ev.changedTouches[0];
+                if ( typeof transformInput == "function") {
+                    var acoord = transformInput(touch.clientX, touch.clientY);
+                    return {
+                        x: acoord[0],
+                        y: acoord[1],
+                        id: touch.identifier
+                    };
+                }
                 return {
                     x: touch.clientX,
                     y: touch.clientY,
                     id: touch.identifier
                 };
             } else { // mouse events
+                if ( typeof transformInput == "function") {
+                    var acoord = transformInput(ev.clientX, ev.clientY);
+                    return {
+                        x: acoord[0],
+                        y: acoord[1],
+                        id: null
+                    };
+                }
                 return {
                     x: ev.clientX,
                     y: ev.clientY,

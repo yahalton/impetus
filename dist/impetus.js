@@ -27,6 +27,7 @@
         var _ref$source = _ref.source;
         var sourceEl = _ref$source === undefined ? document : _ref$source;
         var updateCallback = _ref.update;
+        var transformInput = _ref.transforminput;
         var _ref$multiplier = _ref.multiplier;
         var multiplier = _ref$multiplier === undefined ? 1 : _ref$multiplier;
         var _ref$friction = _ref.friction;
@@ -178,6 +179,14 @@
         function normalizeEvent(ev) {
             if (ev.type === 'touchmove' || ev.type === 'touchstart' || ev.type === 'touchend') {
                 var touch = ev.targetTouches[0] || ev.changedTouches[0];
+                if (typeof transformInput == "function") {
+                    var acoord = transformInput(touch.clientX, touch.clientY);
+                    return {
+                        x: acoord[0],
+                        y: acoord[1],
+                        id: touch.identifier
+                    };
+                }
                 return {
                     x: touch.clientX,
                     y: touch.clientY,
@@ -185,6 +194,14 @@
                 };
             } else {
                 // mouse events
+                if (typeof transformInput == "function") {
+                    var acoord = transformInput(ev.clientX, ev.clientY);
+                    return {
+                        x: acoord[0],
+                        y: acoord[1],
+                        id: null
+                    };
+                }
                 return {
                     x: ev.clientX,
                     y: ev.clientY,
